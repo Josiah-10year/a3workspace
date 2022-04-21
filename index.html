@@ -104,6 +104,7 @@
                 </thead>
         
                 <tbody id="result">
+                    <tr id="nvidia-btn"></tr>
 
                 </tbody>
               </table>
@@ -111,46 +112,49 @@
     </main>
     
 </body>
-    <script src="laptops.js"></script>
-
-    <script>
-
-        //data global variable contains laptop records 
-        console.log(data.length);
+<script src="laptops.js"></script>
+<script>
+    let state = [];
         
-        function filterGPU(brand){
-            const filtered = [];
-
-            //your code
-
-            drawTable(filtered);
+          //data global variable contains laptop records 
+          function filterGPU(brand){
+              const filtered = [];
+        for(let rec of state){
+          if (rec.graphics_brand === brand)
+            filtered.push(rec);
         }
-
-        //renders table rows based on the records given
-        //example_record = {
-        //      "brand":"HP",
-        //      "name":"Notebook 14-df0008nx",
-        //      "processor_type":"Intel Celeron N4000",
-        //      "display_size":14,
-        //      "disk_space":"64 GB (eMMC)",
-        //      "price":1259,
-        //      "graphics_card":"Intel HD Graphics 600",
-        //      "graphics_brand":"Intel",
-        //      "processor_brand":"Intel",
-        //      "rating":0
-        //   }
+              drawTable(filtered);
+        document.querySelector('#nvidia-btn').addEventListener("click",filterGPU(brand));
+        document.querySelector('#amd-btn').addEventListener("click",filterGPU(brand));
+        document.querySelector('#intel-btn').addEventListener("click",filterGPU(brand));
+          }
+        
         function drawTable(records){
-            let html = "";
-
-            //your code
+          let html =' ';
+          let result = document.querySelector('#result');  
+            
+          for(let record of records){
+            html+=`<tr>
+                    <td>${record.name} 
+                    <td>${record.brand}</td> 
+                    <td>${record.graphics_brand}</td>
+                    <td>${record.processor_brand}</td> 
+                    <td>${record.price}</td> 
+                  </tr> `;
+          }
+            result.innerHTML = html; 
         }
-
+    async function showAllGames(){
+          state = await getData();
+          drawTable(state);
+      }
+     
         function showCount(records){
-            // your code
-        }
-
-        drawTable(data);
-        showCount(data);
-
-    </script>
+              // your code
+          }
+  
+          drawTable(data);
+          showCount(data);
+  
+      </script>
 </html>
